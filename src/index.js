@@ -47,7 +47,8 @@ class MovieSearch extends React.Component {
 
     state = {
         input: '',
-        movie: {}
+        movie: {},
+        loading: true
     };
 
     componentWillMount() {
@@ -62,11 +63,11 @@ class MovieSearch extends React.Component {
 
         if(this.verifyInput(value)) {
 
-            this.setState({input: value})
+            this.setState({input: value, loading: true})
 
             fetch(`http://www.omdbapi.com/?t=${value}&apikey=969a0dc3`)
                 .then(response => response.json())
-                .then(json => this.setState({movie: json}));
+                .then(json => this.setState({movie: json, loading: false}));
 
         }
 
@@ -79,12 +80,19 @@ class MovieSearch extends React.Component {
     }
 
     render() {
+
+        let movieInfo;
+        if(this.state.loading)
+            movieInfo = <h4>Loading ...</h4>
+        else
+            movieInfo = <Movie {...this.state.movie}/>
+
         return (
             <div>
                 <h1>Movies</h1>
                 <input type="text" onChange={this.onInputChange} value={this.state.input}></input>
 
-                <Movie {...this.state.movie}/>
+                {movieInfo}
 
             </div>
         )

@@ -11,7 +11,7 @@ class MovieSearch extends React.Component {
     };
 
     componentWillMount() {
-        this.onRequest();
+        this.onRawRequest();
     }
 
     onInputChange = (e) => {
@@ -28,13 +28,19 @@ class MovieSearch extends React.Component {
             setTimeout(() => {
 
                 if(that.state.input === value)
-                    fetch(`http://www.omdbapi.com/?t=${value}&apikey=969a0dc3`)
-                        .then(response => response.json())
-                        .then(json => that.setState({movie: json, loading: false}));
+                    that.onRawRequest(value);
 
             }, 150);
 
         }
+
+    }
+
+    onRawRequest = (value = '') => {
+
+        fetch(`http://www.omdbapi.com/?t=${value}&apikey=969a0dc3`)
+            .then(response => response.json())
+            .then(json => this.setState({movie: json, loading: false}));
 
     }
 

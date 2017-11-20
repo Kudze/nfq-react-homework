@@ -63,11 +63,17 @@ class MovieSearch extends React.Component {
 
         if(this.verifyInput(value)) {
 
-            this.setState({input: value, loading: true})
+            this.setState({input: value, loading: true});
 
-            fetch(`http://www.omdbapi.com/?t=${value}&apikey=969a0dc3`)
-                .then(response => response.json())
-                .then(json => this.setState({movie: json, loading: false}));
+            var that = this;
+            setTimeout(() => {
+
+                if(that.state.input === value)
+                    fetch(`http://www.omdbapi.com/?t=${value}&apikey=969a0dc3`)
+                        .then(response => response.json())
+                        .then(json => that.setState({movie: json, loading: false}));
+
+            }, 150);
 
         }
 

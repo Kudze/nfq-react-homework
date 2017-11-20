@@ -46,6 +46,7 @@ ReactDOM.render(<HelloWorld user="John Snow" age={25}/>, document.getElementById
 class MovieSearch extends React.Component {
 
     state = {
+        input: '',
         movie: {}
     };
 
@@ -58,16 +59,30 @@ class MovieSearch extends React.Component {
     }
 
     onRequest = (value = 'fast') => {
-        fetch(`http://www.omdbapi.com/?t=${value}&apikey=969a0dc3`)
-            .then(response => response.json())
-            .then(json => this.setState({movie: json}));
+
+        if(this.verifyInput(value)) {
+
+            this.setState({input: value})
+
+            fetch(`http://www.omdbapi.com/?t=${value}&apikey=969a0dc3`)
+                .then(response => response.json())
+                .then(json => this.setState({movie: json}));
+
+        }
+
+    }
+
+    verifyInput = (input) => {
+
+        return /(^[a-zA-Z _]+(\s*[a-zA-Z _]+)*$)|(^$)/.test(input);
+
     }
 
     render() {
         return (
             <div>
                 <h1>Movies</h1>
-                <input type="text" onChange={this.onInputChange}></input>
+                <input type="text" onChange={this.onInputChange} value={this.state.input}></input>
 
                 <Movie {...this.state.movie}/>
 

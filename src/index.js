@@ -58,7 +58,7 @@ class MovieSearch extends React.Component {
         this.onRequest(e.target.value);
     }
 
-    onRequest = (value = 'fast') => {
+    onRequest = (value) => {
 
         if(this.verifyInput(value)) {
 
